@@ -4,6 +4,8 @@ find_package(bullet REQUIRED)
 target_sources(${COMMON_LIB_NAME} PRIVATE
 	simulation.hpp
 	simulation.cpp
+	events/event-dispatcher.hpp
+	events/event-queue.hpp
 )
 
 target_link_libraries(${COMMON_LIB_NAME} PRIVATE glm ${BULLET_LIBRARIES})
