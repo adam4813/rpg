@@ -5,7 +5,7 @@
 
 
 namespace rpg {
-	OSWindow::OSWindow() {}
+	OSWindow::OSWindow() : window(nullptr) {}
 
 	OSWindow::~OSWindow() {}
 
@@ -31,7 +31,7 @@ namespace rpg {
 	bool OSWindow::ShouldClose() {
 		return glfwWindowShouldClose(this->window);
 	}
-	GLFWwindow * OSWindow::GetWindowHandle() {
+	GLFWwindow* OSWindow::GetWindowHandle() {
 		return this->window;
 	}
 	void OSWindow::ClearScreen(int red, int green, int blue) {
