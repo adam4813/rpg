@@ -5,6 +5,7 @@
 
 #include "events/event-dispatcher.hpp"
 #include "events/event-queue.hpp"
+#include <script/script-system.hpp>
 
 namespace rpg {
 	class Test : public events::EventQueue<events::os::KeyEvent> {
@@ -27,6 +28,9 @@ int main() {
 	rpg::events::os::OSEventDispatcher osEventsDispatcher(osWindow.GetWindowHandle());
 
 	rpg::Test test;
+
+	rpg::script::ScriptSystem script;
+	script.init();
 
 	while (!osWindow.ShouldClose()) {
 		test.ProcessEventQueue();

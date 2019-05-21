@@ -9,6 +9,9 @@ target_sources(${COMMON_LIB_NAME} PRIVATE
 	events/event-dispatcher.hpp
 	events/event-listener.hpp
 	events/event-queue.hpp
+	script/script-system.hpp
+	script/script-system.cpp
+	script/angelscript-addons-source.cpp
 )
 
 target_link_libraries(${COMMON_LIB_NAME} PRIVATE glm ${BULLET_LIBRARIES} Angelscript::angelscript)
