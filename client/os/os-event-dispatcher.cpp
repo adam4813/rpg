@@ -7,10 +7,9 @@
 namespace rpg {
 	namespace events {
 		namespace os {
-			using KeyDispatcher = EventDispatcher<KeyEvent>;
-			using CharDispatcher = EventDispatcher<CharEvent>;
-			static auto keyDispatcher = KeyDispatcher::Get();
-			static auto charDispatcher = CharDispatcher::Get();
+			static auto keyDispatcher = EventDispatcher<KeyEvent>::Get();
+			static auto charDispatcher = EventDispatcher<CharEvent>::Get();
+
 			OSEventDispatcher::OSEventDispatcher(GLFWwindow* window) : window(window) {
 				glfwSetKeyCallback(this->window, [] (GLFWwindow*, int key, int, int action, int mods) {
 					keyDispatcher->Emit(std::make_shared<KeyEvent>(KeyEvent{ key, action, mods }));

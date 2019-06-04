@@ -23,22 +23,28 @@ namespace rpg {
 			return false;
 		}
 
+		glViewport(0, 0, width, height);
+		glfwSetFramebufferSizeCallback(window, OSWindow::FrameBufferResizeCallback);
 		return true;
 	}
+
 	void OSWindow::MakeContextCurrent() {
 		glfwMakeContextCurrent(this->window);
 	}
+
 	bool OSWindow::ShouldClose() {
 		return glfwWindowShouldClose(this->window);
 	}
+
 	GLFWwindow* OSWindow::GetWindowHandle() {
 		return this->window;
 	}
-	void OSWindow::ClearScreen(int red, int green, int blue) {
-		glClearColor(red, green, blue, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
+
 	void OSWindow::SwapBuffers() {
 		glfwSwapBuffers(this->window);
+	}
+
+	void OSWindow::FrameBufferResizeCallback(GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
 	}
 }

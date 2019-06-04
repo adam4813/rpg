@@ -16,10 +16,10 @@ namespace rpg {
 
 		GLFWwindow* GetWindowHandle();
 
-		void ClearScreen(int red, int green, int blue);
-
 		void SwapBuffers();
 	private:
+		static void FrameBufferResizeCallback(GLFWwindow* window, int width, int height);
+
 		GLFWwindow* window;
 	};
 }
