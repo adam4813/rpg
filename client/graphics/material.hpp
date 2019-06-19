@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <memory>
 
 namespace rpg {
 	namespace graphics {
@@ -10,7 +11,7 @@ namespace rpg {
 		class Material {
 		private:
 			Color color;
-			Texture* texture;
+			std::shared_ptr<Texture> texture;
 		public:
 			void bind(unsigned short texture_unit = 0);
 		};

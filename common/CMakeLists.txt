@@ -13,6 +13,7 @@ target_sources(${COMMON_LIB_NAME} PRIVATE
 	script/script-system.cpp
 	script/angelscript-addons-source.cpp
 	util/worker-thread.hpp
+	util/component-map.hpp
 )
 
 target_link_libraries(${COMMON_LIB_NAME} PRIVATE glm ${BULLET_LIBRARIES} Angelscript::angelscript)

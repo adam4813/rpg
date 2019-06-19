@@ -3,6 +3,7 @@
 #include <future>
 #include <thread>
 #include <functional>
+#include <iostream>
 
 namespace rpg {
 	typedef void(updateable)(double);
@@ -13,15 +14,22 @@ namespace rpg {
 			nextFuture = this->nextPromise.get_future();
 		}
 
-		~WorkerThread() {}
-
-		void spawn() {
-			this->thread = std::thread(&WorkerThread::update, this);
+		~WorkerThread() {
+			std::cout << "worker join" << std::endl;
+			this->joinThread();
 		}
 
-		void update() {
+		void spawnThread() {
+			this->thread = std::thread(&WorkerThread::updateLoop, this);
+		}
+
+		// 500ms shouldJoin check. Should only come into play at program exit.
+		void updateLoop() {
 			while (!this->shouldJoin) {
-				this->nextFuture.wait();
+				auto status = this->nextFuture.wait_for(std::chrono::milliseconds(500));
+				if (status != std::future_status::ready) {
+					continue;
+				}
 				double delta = this->nextFuture.get();
 
 				this->updateFunction(delta);
@@ -32,16 +40,17 @@ namespace rpg {
 			}
 		}
 
+		// Causes updateLoop to do an iteration.
 		void setDelta(double delta) {
 			this->nextPromise.set_value(delta);
 		}
 
-		void join() {
+		void joinThread() {
 			this->shouldJoin = true;
 			this->thread.join();
 		}
 
-		void wait() {
+		void awaitResult() {
 			auto updateFuture = this->updatePromise.get_future();
 			updateFuture.wait();
 			this->updatePromise.swap(std::promise<void>());

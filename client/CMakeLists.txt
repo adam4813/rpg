@@ -4,6 +4,7 @@ find_package(glew CONFIG REQUIRED)
 
 target_sources(${CLIENT_NAME} PRIVATE
 	main.cpp
+	game.hpp
 	game.cpp
 	os/os-window.hpp
 	os/os-window.cpp
@@ -16,6 +17,8 @@ target_sources(${CLIENT_NAME} PRIVATE
 	graphics/mesh.cpp
 	graphics/material.hpp
 	graphics/texture.hpp
+	components/renderable.hpp
+	components/renderable.cpp
 )
 
 target_link_libraries(${CLIENT_NAME} PRIVATE ${COMMON_LIB_NAME} GLEW::GLEW glfw OpenAL::OpenAL)
