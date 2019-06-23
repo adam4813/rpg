@@ -7,7 +7,7 @@
 #include "../os/os-window.hpp"
 
 namespace rpg {
-	typedef ComponentMap<std::shared_ptr<Renderable>> RenderableMap;
+	typedef ComponentMap<Renderable> RenderableMap;
 	namespace graphics {
 		class RenderSystem {
 		public:
@@ -17,6 +17,7 @@ namespace rpg {
 		private:
 			static void ClearScreen(float red, float green, float blue);
 			OSWindow& osWindow;
+			RenderableMap renderableMap = GetComponentTypeMap<Renderable>();
 		};
 	}
 }

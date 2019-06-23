@@ -6,6 +6,8 @@ find_package(bullet REQUIRED)
 target_sources(${COMMON_LIB_NAME} PRIVATE
 	simulation.hpp
 	simulation.cpp
+	components/common-components.hpp
+	components/component-types.hpp
 	events/event-dispatcher.hpp
 	events/event-listener.hpp
 	events/event-queue.hpp
