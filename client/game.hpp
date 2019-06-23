@@ -6,11 +6,12 @@
 #include <util\worker-thread.hpp>
 
 #include "graphics/render-system.hpp"
+#include "os/os-window.hpp"
 
 namespace rpg {
 	class Game {
 	public:
-		Game();
+		Game(OSWindow& osWindow);
 
 		void init();
 
@@ -20,5 +21,6 @@ namespace rpg {
 	private:
 		graphics::RenderSystem renderSystem;
 		std::set<std::unique_ptr<WorkerThread>> updateThreads;
+		OSWindow& osWindow;
 	};
 }

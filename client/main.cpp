@@ -1,4 +1,3 @@
-#include <simulation.hpp>
 #include <events/event-dispatcher.hpp>
 #include <events/event-queue.hpp>
 #include <script/script-system.hpp>
@@ -27,36 +26,39 @@ namespace rpg {
 int main() {
 	rpg::OSWindow osWindow;
 	osWindow.CreateWindow(800, 600);
-	osWindow.MakeContextCurrent();
 	rpg::events::os::OSEventDispatcher osEventsDispatcher(osWindow.GetWindowHandle());
-
-	rpg::Game game;
-	game.init();
-
 	rpg::Test test;
 
 	rpg::script::ScriptSystem script;
 	script.init();
 
-	double time = glfwGetTime();
-	double delta = time;
-	double lastTime = delta;
+	// Unblock the main game thread as osEventsDispatcher.PollEvents(); can block on windows
+	std::thread gameThread(
+		[&] () {
+			rpg::Game game(osWindow);
+			game.init();
+			double time = glfwGetTime();
+			double delta = time;
+			double lastTime = delta;
+			while (!osWindow.ShouldClose()) {
+				time = glfwGetTime();
+				delta = time - lastTime;
+				lastTime = time;
+
+				game.update(delta);
+
+				// Do main thread things here
+
+				game.await();
+			}
+		});
 
 	while (!osWindow.ShouldClose()) {
-		time = glfwGetTime();
-		delta = time - lastTime;
-		lastTime = time;
 		test.ProcessEventQueue();
-
-		game.update(delta);
-
-		// Do main thread things here
-
-		game.await();
-		osWindow.SwapBuffers();
 		osEventsDispatcher.PollEvents();
 	}
 
+	gameThread.join();
 
 	return 0;
 }

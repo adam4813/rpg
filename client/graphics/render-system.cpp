@@ -11,10 +11,15 @@ namespace rpg {
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
 
+		RenderSystem::RenderSystem(OSWindow& osWindow) : osWindow(osWindow) {}
+
 		void RenderSystem::update(double delta) {
-			std::stringstream ss;
-			ss << "Render update @ " << delta << std::endl;
-			std::cout << ss.str();
+			static double accum = delta;
+			accum += delta;
+			this->ClearScreen(1, fmod(accum, 1), 1 - fmod(accum, 1));
+
+
+			osWindow.SwapBuffers();
 		}
 	}
 }

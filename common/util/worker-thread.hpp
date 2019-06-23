@@ -4,13 +4,14 @@
 #include <thread>
 #include <functional>
 #include <iostream>
+#include <optional>
 
 namespace rpg {
 	typedef void(updateable)(double);
 
 	class WorkerThread {
 	public:
-		WorkerThread(std::function<updateable> updateFunction) : updateFunction(updateFunction) {
+		WorkerThread(std::function<updateable> updateFunction, std::optional<std::function<void()>> spawnFunction = {}) : updateFunction(updateFunction), spawnFunction(spawnFunction) {
 			nextFuture = this->nextPromise.get_future();
 		}
 
@@ -25,6 +26,9 @@ namespace rpg {
 
 		// 500ms shouldJoin check. Should only come into play at program exit.
 		void updateLoop() {
+			if (this->spawnFunction.has_value()) {
+				this->spawnFunction.value()();
+			}
 			while (!this->shouldJoin) {
 				auto status = this->nextFuture.wait_for(std::chrono::milliseconds(500));
 				if (status != std::future_status::ready) {
@@ -58,6 +62,7 @@ namespace rpg {
 
 	private:
 		std::function<updateable> updateFunction;
+		std::optional<std::function<void()>> spawnFunction;
 		std::future<double> nextFuture;
 		std::promise<double> nextPromise;
 		std::promise<void> updatePromise;

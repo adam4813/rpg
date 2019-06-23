@@ -4,13 +4,16 @@
 #include <sstream>
 
 namespace rpg {
-	Game::Game() {}
+	Game::Game(OSWindow& osWindow) : osWindow(osWindow), renderSystem(osWindow) {}
 
 	void Game::init() {
 		this->updateThreads.emplace(
 			std::make_unique<WorkerThread>(
 				[this] (double delta) {
 					this->renderSystem.update(delta);
+				},
+				[this] () {
+					this->osWindow.MakeContextCurrent();
 				})
 		);
 		this->updateThreads.emplace(
