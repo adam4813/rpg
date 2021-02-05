@@ -16,6 +16,7 @@ target_sources(${CLIENT_NAME} PRIVATE
 	graphics/mesh.hpp
 	graphics/mesh.cpp
 	graphics/material.hpp
+	graphics/material.cpp
 	graphics/texture.hpp
 	components/renderable.hpp
 	components/renderable.cpp
